@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from "./Header/Header";
+import generateID from "./utils/GenerateID";
+import Deck from "./Deck/Deck";
+import GlobalFonts from "./Fonts/fonts";
+import { createGlobalStyle } from "styled-components";
+import ModalLogin from "./Modal/ModalLogin";
+import { Context } from "./utils/Context";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
+  const [state, setState] = useLocalStorage(
+    {
+      columns: [
+        { id: "1", title: "TODO" },
+        { id: "2", title: "In Progress" },
+        { id: "3", title: "Testing" },
+        { id: "4", title: "Done" },
+      ],
+      cards: [],
+      descriptions: [],
+      commentaries: [],
+    },
+    "state" // key for localstorage
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <GlobalFonts />
+      <Context.Provider value={{ state, setState }}>
+        <Header />
+        <Deck />
+        {!state.userName && <ModalLogin/>}
+      </Context.Provider>
+    </>
   );
 }
 
 export default App;
+
+const GlobalStyle = createGlobalStyle`
+body{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(0,121,191);
+}
+`;
