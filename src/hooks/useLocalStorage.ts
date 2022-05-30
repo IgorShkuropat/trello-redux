@@ -4,7 +4,7 @@ import { ILocalStorage } from "../Types/Types";
 
 export const useLocalStorage: ILocalStorage = (initialValue, key) => {
   const getValue = (): TState => {
-    const storage: string | null = localStorage.getItem(key); // string || null
+    const storage: string | null = localStorage.getItem(key); 
 
     if (storage) {
       return JSON.parse(storage); // '{}',
