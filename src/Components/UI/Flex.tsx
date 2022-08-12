@@ -11,10 +11,9 @@ interface Props {
   gap?: string;
   wrap?: string;
   basis?: string;
-  onClick?: (MouseEventHandler<HTMLDivElement> & Function)
 }
 
-const StyledFlex = styled.div<Props>`
+const Flex = styled.div<Props>`
   display: flex;
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justify || "stretch"};
@@ -26,13 +25,5 @@ const StyledFlex = styled.div<Props>`
   flex-wrap: ${(props) => props.wrap || "nowrap"};
   flex-basis: ${(props) => props.basis || "auto"};
 `;
-
-const Flex: FC<Props> = (props) => {
-  return (
-    <>
-      <StyledFlex {...props} />
-    </>
-  );
-};
 
 export default Flex;

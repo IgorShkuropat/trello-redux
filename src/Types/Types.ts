@@ -1,20 +1,16 @@
 import { Dispatch, SetStateAction } from "react";
 
-export type TCard = { id: string; text: string; columnId: string };
+export type TCard = { id: string; text: string; columnId: string; description?: string};
 export type TModalCardProps = {
   cardProps: TCard;
-  toggleModal: (a: any) => void;
+  toggleModal: () => void;
 };
 export type TCardProps = {
   currentColumnId: string;
 };
 export type TState = {
   columns: TColumn[];
-  cards: { id: string; text: string; columnId: string }[];
-  descriptions: {
-    text: string,
-    cardId: string,
-  }[]
+  cards: TCard[];
   commentaries: {
     id: string;
     text: string;

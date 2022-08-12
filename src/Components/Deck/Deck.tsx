@@ -1,11 +1,10 @@
 import { useState, useContext } from "react";
-import { Context } from "../utils/Context";
-import generateID from "../utils/GenerateID";
+import { Context } from "../../utils/Context";
+import generateID from "../../utils/GenerateID";
 import styled from "styled-components";
-import Flex from "../Flex";
+import Flex from "../UI/Flex";
 import Column from "./Column";
 import { AiOutlinePlus } from "react-icons/ai";
-import ModalCard from "../Modal/ModalCard";
 
 const Deck = () => {
   const { state, setState } = useContext(Context);

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Flex from '../Flex'
+import Flex from '../Components/UI/Flex'
 import {TModal} from "../Types/Types"
 import React from "react"
 

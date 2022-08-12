@@ -1,11 +1,10 @@
 import Header from "./Header/Header";
-import generateID from "./utils/GenerateID";
 import Deck from "./Deck/Deck";
-import GlobalFonts from "./Fonts/fonts";
+import GlobalFonts from "../Fonts/fonts";
 import { createGlobalStyle } from "styled-components";
-import ModalLogin from "./Modal/ModalLogin";
-import { Context } from "./utils/Context";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import ModalLogin from "../Modal/ModalLogin";
+import { Context } from "../utils/Context";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 function App() {
   const [state, setState] = useLocalStorage(
@@ -17,7 +16,6 @@ function App() {
         { id: "4", title: "Done" },
       ],
       cards: [],
-      descriptions: [],
       commentaries: [],
     },
     "state" // key for localstorage

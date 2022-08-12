@@ -10,7 +10,7 @@ import {
 import { IoClose } from "react-icons/io5";
 import { BsCardHeading } from "react-icons/bs";
 import { TModalCardProps } from "../Types/Types";
-import Flex from "../Flex";
+import Flex from "../Components/UI/Flex";
 import { MdOutlineDescription } from "react-icons/md";
 
 const ModalCard: FC<TModalCardProps> = ({
@@ -19,21 +19,23 @@ const ModalCard: FC<TModalCardProps> = ({
 }) => {
   const { state, setState } = useContext(Context);
   const [titleInput, setTitleInput] = useState(text);
-  const [descriptionText, setDescriptionText] = useState<string>("");
-  const { cards, descriptions } = state;
+  const [descriptionText, setDescriptionText] = useState("");
+  const { cards } = state;
 
   useEffect(() => {
+    const description = cards.find((card) => card.id === cardId)?.description || ""
 
- 
-    const currentDescription = descriptions ? descriptions.filter((elem) => elem.cardId === cardId) : ""
-    console.log(descriptions);
-    console.log(currentDescription);
-   
-    const newDescriptionText = currentDescription ? currentDescription[0] : "";
-    console.log(typeof newDescriptionText);
-    if (typeof newDescriptionText === "object" || newDescriptionText[0] !== undefined) {
-      setDescriptionText(currentDescription[0].text);
-    }
+    setDescriptionText(description);
+    const keyDownHandler = (event) => {
+      if (event.key === `Escape`) {
+        toggleModal();
+      }
+    };
+    document.addEventListener("keydown", keyDownHandler);
+
+    return () => {
+      document.removeEventListener("keydown", keyDownHandler);
+    };
   }, []);
 
   const handleChangeNewTitle = (e) => {
@@ -43,34 +45,53 @@ const ModalCard: FC<TModalCardProps> = ({
   const handleChangeNewDescription = (e) => {
     let newDescription = e.target.value;
     setDescriptionText(newDescription);
+    setState({
+      ...state,
+      cards: cards.map(card =>{ if (card.id === cardId){
+        card.description = newDescription
+      }
+      return card
+    })
+    });
   };
+
   const saveData = () => {
     const newState = {
       ...state,
-      cards: cards.map((elem) => {
-        if (elem.id === cardId) {
-          elem.text = titleInput;
+      cards: cards.map((card) => {
+        if (card.id === cardId) {
+          card.text = titleInput;
+          card.description = descriptionText
         }
-        return elem;
-      }),
-      descriptions: descriptions.map((elem) => {
-        if (elem.cardId === cardId) {
-          elem.text = descriptionText;
-        }
-        return elem;
+        return card;
       }),
     };
     setState(newState);
   };
 
+  const removeTask = (cardId: string): void => {
+    let filtredCards = {
+      ...state,
+      cards: cards.filter((cards) => !(cards.id === cardId)),
+    };
+    setState(filtredCards);
+  };
+
   return (
     <BasicModal>
-      <ModalContent align="flex-start" direction="column">
-        <Flex justify="flex-start" align="center" width="100%">
-          <InputIcon />
-          <CardTitle value={titleInput} onChange={handleChangeNewTitle} />
+      <ModalContent align="flex-start" direction="column" gap="16px">
+        <Flex justify="flex-end" direction="row">
+          <div style={{ marginRight: "4rem" }}>
+            <Flex justify="flex-start" align="center" width="100%">
+              <InputIcon />
+              <div style={{ marginLeft: "2%" }}>
+                <CardTitle value={titleInput} onChange={handleChangeNewTitle} />
+              </div>
+            </Flex>
+          </div>
           <CloseButton onClick={toggleModal} />
         </Flex>
+
         <Flex justify="flex-start" align="center" width="100%">
           <DescriptionIcon />
           <Flex direction="column">
@@ -83,9 +104,15 @@ const ModalCard: FC<TModalCardProps> = ({
           </Flex>
         </Flex>
 
-        <SaveButton onClick={saveData}>
-          <SaveButtonText>Save</SaveButtonText>
-        </SaveButton>
+        <Flex align="center" justify="space-between" width="90%">
+          <SaveButton onClick={saveData}>
+            <SaveButtonText>Save</SaveButtonText>
+          </SaveButton>
+
+          <DeleteButton onClick={() => (removeTask(cardId), toggleModal())}>
+            <SaveButtonText>Delete</SaveButtonText>
+          </DeleteButton>
+        </Flex>
       </ModalContent>
     </BasicModal>
   );
@@ -97,6 +124,7 @@ const CloseButton = styled(IoClose)`
   border-radius: 50%;
   background-color: #f4f5f7;
   margin-top: 4%;
+  margin-right: 4%;
   width: 1rem;
   height: 1rem;
   border: 3px black;
@@ -108,7 +136,7 @@ const CloseButton = styled(IoClose)`
   }
 `;
 const CardTitle = styled.input`
-  width: 75%;
+  width: 100%;
   margin: 0.5rem 1%;
   &:focus {
     outline: 1px solid black;
@@ -119,6 +147,7 @@ const CardTitle = styled.input`
   }
   border-radius: 2px;
   border: 0;
+  border-bottom: 1px solid grey;
   color: #172b4d;
   font-weight: 700;
   background-color: #f4f5f7;
@@ -137,11 +166,12 @@ const DescriptionTitle = styled.h2`
 const DescriptionIcon = styled(MdOutlineDescription)`
   color: #172b4d;
   align-self: flex-start;
-  margin-left: 4%;
+  margin-left: 3%;
+  margin-right: 1%;
 `;
 
 const DescriptionTextarea = styled.textarea`
-  width: 75%;
+  width: 100%;
   margin: 0;
   margin-bottom: 4%;
   margin-top: 1%;
@@ -160,3 +190,7 @@ const DescriptionTextarea = styled.textarea`
 
 const CommentariesTitle = styled(CardTitle)``;
 const CommentariesText = styled.textarea``;
+
+const DeleteButton = styled(SaveButton)`
+  background-color: #9f1010;
+`;

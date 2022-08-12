@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import Flex from "../Flex";
+import Flex from "../Components/UI/Flex";
 import BasicModal from "./BasicModal";
-// import { Title as Input } from "../Deck/Column";
 import { Context } from "../utils/Context";
 import { useContext, useState } from "react";
 
@@ -80,5 +79,6 @@ export const SubmitButton = styled.button`
 `;
 export const SubmitButtonText = styled.span`
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 `;

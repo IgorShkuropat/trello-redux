@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
-import { Context } from "../utils/Context";
+import { Context } from "../../utils/Context";
 import styled from "styled-components";
-import generateID from "../utils/GenerateID";
-import { Props } from "../Types/Types";
-import Flex from "../Flex";
+import generateID from "../../utils/GenerateID";
+import { Props } from "../../Types/Types";
+import Flex from "../UI/Flex";
 import Card from "./Card";
 
 const Column: React.FC<Props> = ({ column: { title, id } }) => {
