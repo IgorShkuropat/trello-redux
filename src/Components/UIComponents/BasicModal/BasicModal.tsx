@@ -1,9 +1,12 @@
 import styled from "styled-components";
-import Flex from '../Components/UI/Flex'
-import {TModal} from "../Types/Types"
+import {Flex} from '../../Flex'
 import React from "react"
 
-const BasicModal: React.FC<TModal> = (props) => {
+type TModal = {
+  children: React.ReactNode;
+}
+
+export const BasicModal: React.FC<TModal> = (props) => {
   return (
     <Modal justify="center" align="center">
       {props.children}
@@ -11,7 +14,6 @@ const BasicModal: React.FC<TModal> = (props) => {
   )
 }
 
-export default BasicModal
 
 
 const Modal = styled(Flex)`

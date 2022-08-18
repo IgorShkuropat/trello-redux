@@ -1,15 +1,8 @@
-import { FC } from "react";
 import styled from "styled-components";
-import Flex from "../UI/Flex";
-import { GiBiceps} from "react-icons/gi";
+import { Flex } from "../../components";
+import { GiBiceps } from "react-icons/gi";
 
-
-
-interface Props {
-  props?: string;
-}
-
-const Header: FC<Props> = () => {
+export const Header = () => {
   return (
     <>
       <Background>
@@ -21,10 +14,6 @@ const Header: FC<Props> = () => {
     </>
   );
 };
-
-export default Header;
-
-
 
 const Background = styled.header`
   background-color: #0066a0;

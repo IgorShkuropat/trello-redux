@@ -1,10 +1,8 @@
-import Header from "./Header/Header";
-import Deck from "./Deck/Deck";
-import GlobalFonts from "../Fonts/fonts";
-import { createGlobalStyle } from "styled-components";
-import ModalLogin from "../Modal/ModalLogin";
-import { Context } from "../utils/Context";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import {Header, Deck, ModalLogin} from "./components";
+import {GlobalStyles} from "./GlobalStyles";
+import { Context } from "./store/Context";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+
 
 function App() {
   const [state, setState] = useLocalStorage(
@@ -16,19 +14,19 @@ function App() {
         { id: "4", title: "Done" },
       ],
       cards: [],
-      commentaries: [],
+      userName: ""
     },
     "state" // key for localstorage
   );
 
   return (
     <>
-      <GlobalStyle />
-      <GlobalFonts />
+      <GlobalStyles />
       <Context.Provider value={{ state, setState }}>
         <Header />
         <Deck />
         {!state.userName && <ModalLogin/>}
+
       </Context.Provider>
     </>
   );
@@ -36,11 +34,4 @@ function App() {
 
 export default App;
 
-const GlobalStyle = createGlobalStyle`
-body{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  background-color: rgb(0,121,191);
-}
-`;
+

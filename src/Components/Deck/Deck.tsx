@@ -1,12 +1,11 @@
 import { useState, useContext } from "react";
-import { Context } from "../../utils/Context";
-import generateID from "../../utils/GenerateID";
+import { Context } from "../../store/Context";
+import { generateID } from "../../utils/generateID";
 import styled from "styled-components";
-import Flex from "../UI/Flex";
-import Column from "./Column";
+import { Column, Flex } from "../../components";
 import { AiOutlinePlus } from "react-icons/ai";
 
-const Deck = () => {
+export const Deck = () => {
   const { state, setState } = useContext(Context);
 
   const [title, setTitle] = useState("");
@@ -50,8 +49,6 @@ const Deck = () => {
     </Wrapper>
   );
 };
-
-export default Deck;
 
 const Wrapper = styled.div`
   max-width: 95%;

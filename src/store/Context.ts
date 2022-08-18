@@ -1,4 +1,4 @@
 import {createContext} from "react";
-import { TContext } from "../Types/Types";
+import { TContext } from "../types";
 
 export const Context = createContext<TContext>(null!);

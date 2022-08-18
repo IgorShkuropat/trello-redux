@@ -1,21 +1,28 @@
 import { useState, useContext } from "react";
-import { Context } from "../../utils/Context";
+import { Context } from "../../store/Context";
 import styled from "styled-components";
-import generateID from "../../utils/GenerateID";
-import { Props } from "../../Types/Types";
-import Flex from "../UI/Flex";
-import Card from "./Card";
+import { generateID } from "../../utils/generateID";
+import { TColumn } from "../../types";
+import { Flex, CardList } from "../../components";
 
-const Column: React.FC<Props> = ({ column: { title, id } }) => {
+type Props = {
+  column: TColumn;
+};
+
+export const Column: React.FC<Props> = ({
+  column: { title, id: columnId },
+}) => {
   const [input, setInput] = useState("");
   const { state, setState } = useContext(Context);
-  const columns = state.columns;
-  let currentColumnId: string = id;
+  const { columns, cards } = state;
 
-  const addTask = () => {
+  const addCard = () => {
     const newState = {
       ...state,
-      cards: [...state.cards, { id: generateID(), text: input, columnId: id }],
+      cards: [
+        ...state.cards,
+        { id: generateID(), text: input, columnId: columnId, comments: []},
+      ],
     };
     if (input) {
       setState(newState);
@@ -25,7 +32,7 @@ const Column: React.FC<Props> = ({ column: { title, id } }) => {
     }
   };
 
-  const handleChangeCard = (e) => {
+  const handleChangeInput = (e) => {
     setInput(e.target.value);
   };
 
@@ -34,7 +41,7 @@ const Column: React.FC<Props> = ({ column: { title, id } }) => {
     let newState = {
       ...state,
       columns: columns.map((elem) => {
-        if (elem.id === id) {
+        if (elem.id === columnId) {
           elem.title = newTitle;
         }
         return elem;
@@ -42,7 +49,7 @@ const Column: React.FC<Props> = ({ column: { title, id } }) => {
     };
     setState(newState);
   };
-
+ 
   return (
     <>
       <CardContainer
@@ -64,18 +71,16 @@ const Column: React.FC<Props> = ({ column: { title, id } }) => {
           placeholder="Enter card title"
           value={input}
           name="text"
-          onChange={handleChangeCard}
+          onChange={handleChangeInput}
         />
-        <Card currentColumnId={currentColumnId} />
-        <Button onClick={addTask}>
+        <CardList columnId={columnId} />
+        <Button onClick={addCard}>
           <ButtonText>Add card</ButtonText>
         </Button>
       </CardContainer>
     </>
   );
 };
-
-export default Column;
 
 const Button = styled.button`
   border: none;

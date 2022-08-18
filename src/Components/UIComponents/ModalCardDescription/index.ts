@@ -1,0 +1,1 @@
+export {ModalCardDescription} from './ModalCardDescription'

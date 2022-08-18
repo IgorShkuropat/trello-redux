@@ -1,10 +1,10 @@
-import React, { FC, MouseEventHandler } from "react";
 import styled from "styled-components";
 
 interface Props {
   direction?: string;
   justify?: string;
   align?: string;
+  alignSelf?: string;
   margin?: string;
   width?: string;
   height?: string;
@@ -13,11 +13,12 @@ interface Props {
   basis?: string;
 }
 
-const Flex = styled.div<Props>`
+export const Flex = styled.div<Props>`
   display: flex;
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justify || "stretch"};
   align-items: ${(props) => props.align || "stretch"};
+  align-self: ${(props) => props.alignSelf || "stretch"};
   margin: ${(props) => props.margin || "0"};
   width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "auto"};
@@ -26,4 +27,3 @@ const Flex = styled.div<Props>`
   flex-basis: ${(props) => props.basis || "auto"};
 `;
 
-export default Flex;
