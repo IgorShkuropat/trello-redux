@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, } from "react";
 import { BsFillPencilFill as Pencil } from "react-icons/bs";
 import { TCard } from "../../types";
-import { Flex, ModalCard, Button, BasicModal} from "../../components";
+import { Flex, ModalCard} from "../../components";
 import styled from "styled-components";
 
 type Props = {

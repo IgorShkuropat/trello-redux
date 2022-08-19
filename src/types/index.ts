@@ -1,8 +1,10 @@
+// import { TComment } from './index';
 import { Dispatch, SetStateAction } from "react";
 
 export type TComment = {
   text: string;
   cardId: string;
+  id: string;
 };
 
 export type TCard = {
@@ -29,8 +31,10 @@ export type TContext = {
   setState: Dispatch<SetStateAction<TState>>;
 };
 
-export type setValue<TState> = Dispatch<SetStateAction<TState>>;
+export type TsetValue<TState> = Dispatch<SetStateAction<TState>>;
+
+export type TsetComments<TComment> = Dispatch<SetStateAction<TComment>>
 
 export interface ILocalStorage {
-  (initialValue: TState, key: string): [TState, setValue<TState>];
+  (initialValue: TState, key: string): [TState, TsetValue<TState>];
 }

@@ -16,12 +16,12 @@ export const ModalCardDescription: FC<Props> = ({ cardId, descriptionText, setDe
 
   useEffect(() => {
     const description =
-      cards.find((card) => card.id === cardId)?.description || "";
+      cards.find(card => card.id === cardId)?.description || "";
 
     setDescriptionText(description);
   }, []);
 
-  const handleChangeNewDescription = (e) => {
+  const handleChangeNewDescription = e => {
     setDescriptionText( e.target.value);
   };
 

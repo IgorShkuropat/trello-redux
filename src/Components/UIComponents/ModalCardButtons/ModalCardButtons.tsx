@@ -3,11 +3,11 @@ import {Flex, Button} from "../../../components"
 
 type Props = {
     saveData: () => void,
-    removeTask: (cardId: string) => void,
+    removeCard: (cardId: string) => void,
     cardId: string,
     disableModal: () => void
 }
-export const ModalCardButtons: FC<Props> = ({saveData, removeTask, disableModal, cardId}) => {
+export const ModalCardButtons: FC<Props> = ({saveData, removeCard, disableModal, cardId}) => {
   return (
     <>
     <Flex
@@ -20,7 +20,7 @@ export const ModalCardButtons: FC<Props> = ({saveData, removeTask, disableModal,
       <Button onClick={saveData}>Save</Button>
       <Button
         color="#9f1010"
-        onClick={() => (removeTask(cardId), disableModal())}
+        onClick={() => (removeCard(cardId), disableModal())}
       >
         Delete
       </Button>

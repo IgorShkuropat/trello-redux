@@ -19,7 +19,7 @@ type TModalCardProps = {
 };
 
 export const ModalCard: FC<TModalCardProps> = ({
-  cardProps: { text, id: cardId },
+  cardProps: { text, id: cardId, comments: cardComments },
   disableModal,
 }) => {
   const { state, setState } = useContext(Context);
@@ -59,7 +59,7 @@ export const ModalCard: FC<TModalCardProps> = ({
     setState(newState);
   };
 
-  const removeTask = (cardId: string): void => {
+  const removeCard = (cardId: string): void => {
     let filtredCards = {
       ...state,
       cards: cards.filter((cards) => !(cards.id === cardId)),
@@ -92,12 +92,12 @@ export const ModalCard: FC<TModalCardProps> = ({
           setDescriptionText={setDescriptionText}
           cardId={cardId}
         />
-        <CommentsBlock cardId={cardId} />
+        <CommentsBlock cardId={cardId} cardComments={cardComments} />
         <ModalCardButtons
           saveData={saveData}
           disableModal={disableModal}
           cardId={cardId}
-          removeTask={removeTask}
+          removeCard={removeCard}
         />
       </ModalContent>
     </BasicModal>
