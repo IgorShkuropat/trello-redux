@@ -42,7 +42,7 @@ export const Comment: FC<Props> = ({
         return card;
       }),
     };
-    setState(newState)
+    setState(newState);
   };
 
   const deleteComment = () => {
@@ -65,34 +65,43 @@ export const Comment: FC<Props> = ({
     setCommentsList(newCommentsList!);
   };
   return (
-    comment && (
-      <Flex direction="column" margin="12px 0 8px 12px" gap="4px">
-        <Flex direction="column" gap="4px">
-          <Flex justify="space-between">
-            <AuthorName>{userName}</AuthorName>
-            <Flex gap="4px">
-              <Pen onClick={() => setisCommentEditing(true)} />
-              <DeleteCommentIcon onClick={deleteComment} />
-            </Flex>
+    <StyledFlex
+      direction="column"
+      margin="12px 0 8px 12px"
+      gap="4px"
+      width="237px"
+    >
+      <Flex direction="column" gap="4px">
+        <Flex justify="space-between">
+          <AuthorName>{userName}</AuthorName>
+          <Flex gap="4px">
+            <Pen onClick={() => setisCommentEditing(true)} />
+            <DeleteCommentIcon onClick={deleteComment} />
           </Flex>
         </Flex>
-        {isCommentEditing ? (
-          <>
-            <CommentTextTextarea
-              value={newCommentText}
-              onChange={handleChangeNewCommentText}
-            />
-            <Button onClick={() => (setisCommentEditing(false), applyNewCommentText())}>
-              Save comment
-            </Button>
-          </>
-        ) : (
-          <CommentText>{newCommentText}</CommentText>
-        )}
       </Flex>
-    )
+      {isCommentEditing ? (
+        <>
+          <CommentTextTextarea
+            value={newCommentText}
+            onChange={handleChangeNewCommentText}
+          />
+          <Button
+            onClick={() => (setisCommentEditing(false), applyNewCommentText())}
+          >
+            Save comment
+          </Button>
+        </>
+      ) : (
+        <CommentText>{newCommentText}</CommentText>
+      )}
+    </StyledFlex>
   );
 };
+
+const StyledFlex = styled(Flex)`
+  overflow: hidden;
+`;
 
 const AuthorName = styled.span`
   color: #172b4d;
