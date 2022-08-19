@@ -1,7 +1,7 @@
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import { BsFillPencilFill as Pencil } from "react-icons/bs";
 import { TCard } from "../../types";
-import { Flex, ModalCard} from "../../components";
+import { Flex, ModalCard } from "../../components";
 import styled from "styled-components";
 
 type Props = {
@@ -13,26 +13,25 @@ export const Card: React.FC<Props> = ({ card }) => {
 
   const disableModal = () => {
     setIsModalActive(false);
-  }
+  };
 
   return (
     <>
-      
-          <CardBody justify="space-between" width="100%">
-            <CardText>{` ${card.text}`}</CardText>
-            <EditButton onClick={() => setIsModalActive(true)}>
-              <Pen />
-            </EditButton>
-          </CardBody>
+      <CardBody justify="space-between">
+        <CardTextWrapper>
+          <CardText>{` ${card.text}`}</CardText>
+        </CardTextWrapper>
+        <EditButton onClick={() => setIsModalActive(true)}>
+          <Pen />
+        </EditButton>
+      </CardBody>
 
-          {isModalActive && (
-            <ModalCard disableModal={disableModal} cardProps={card} />
-          )}
-
-      
+      {isModalActive && (
+        <ModalCard disableModal={disableModal} cardProps={card} />
+      )}
     </>
   );
-}
+};
 
 const Pen = styled(Pencil)`
   display: block;
@@ -52,6 +51,10 @@ const EditButton = styled.button`
   }
 `;
 
+const CardTextWrapper = styled.div`
+  max-width: 255.8px;
+  overflow: hidden;
+`;
 const CardBody = styled(Flex)`
   margin: 0;
   font-size: 0.7rem;
