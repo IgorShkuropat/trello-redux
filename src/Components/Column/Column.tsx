@@ -3,7 +3,7 @@ import { Context } from "../../store/Context";
 import styled from "styled-components";
 import { generateID } from "../../utils/generateID";
 import { TColumn } from "../../types";
-import { Flex, CardList } from "../../components";
+import { Flex,  Card } from "../../components";
 
 type Props = {
   column: TColumn;
@@ -73,7 +73,7 @@ export const Column: React.FC<Props> = ({
           name="text"
           onChange={handleChangeInput}
         />
-        <CardList columnId={columnId} />
+        {cards.map(card => columnId === card.columnId && <Card key={card.id} card={card} />)}
         <Button onClick={addCard}>
           <ButtonText>Add card</ButtonText>
         </Button>

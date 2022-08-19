@@ -15,22 +15,22 @@ import { BsCardHeading } from "react-icons/bs";
 
 type TModalCardProps = {
   cardProps: TCard;
-  toggleModal: () => void;
+  disableModal: () => void;
 };
 
 export const ModalCard: FC<TModalCardProps> = ({
   cardProps: { text, id: cardId },
-  toggleModal,
+  disableModal,
 }) => {
   const { state, setState } = useContext(Context);
   const [titleInput, setTitleInput] = useState(text);
+  const [descriptionText, setDescriptionText] = useState("");
   const { cards } = state;
 
   useEffect(() => {
-
     const keyDownHandler = (event) => {
       if (event.key === `Escape`) {
-        toggleModal();
+        disableModal();
       }
     };
     document.addEventListener("keydown", keyDownHandler);
@@ -45,14 +45,13 @@ export const ModalCard: FC<TModalCardProps> = ({
     setTitleInput(newTitle);
   };
 
-
   const saveData = () => {
     const newState = {
       ...state,
       cards: cards.map((card) => {
         if (card.id === cardId) {
           card.text = titleInput;
-          // card.description = descriptionText;
+          card.description = descriptionText;
         }
         return card;
       }),
@@ -85,16 +84,18 @@ export const ModalCard: FC<TModalCardProps> = ({
               </div>
             </Flex>
           </div>
-          <CloseButton onClick={toggleModal} />
+          <CloseButton onClick={disableModal} />
         </Flex>
 
         <ModalCardDescription
-        cardId={cardId}
+          descriptionText={descriptionText}
+          setDescriptionText={setDescriptionText}
+          cardId={cardId}
         />
         <CommentsBlock cardId={cardId} />
         <ModalCardButtons
           saveData={saveData}
-          toggleModal={toggleModal}
+          disableModal={disableModal}
           cardId={cardId}
           removeTask={removeTask}
         />
@@ -139,6 +140,3 @@ const InputIcon = styled(BsCardHeading)`
   margin-left: 4%;
   color: #172b4d;
 `;
-
-
-

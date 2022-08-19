@@ -1,7 +1,7 @@
 import React, { useState, useContext, FC } from "react";
 import { TComment } from "../../types";
 import { Context } from "../../store/Context";
-import { Flex, Button, CommentsList } from "../../components";
+import { Flex, Button, Comment } from "../../components";
 import { FaRegComments as Icon } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -57,7 +57,10 @@ export const CommentsBlock: FC<Props> = ({ cardId }) => {
             Add comment
           </Button>
         </Flex>
-        <CommentsList comments={comments} />
+        {comments &&
+        comments.map((comment) => (
+            <Comment userName={state.userName} comment={comment} />
+        ))}
       </Flex>
     </>
   );

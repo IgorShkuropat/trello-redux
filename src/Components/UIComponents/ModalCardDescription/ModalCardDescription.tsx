@@ -6,12 +6,13 @@ import styled from "styled-components";
 
 type Props = {
   cardId: string;
+  descriptionText: string;
+  setDescriptionText: (description: string) => void;
 };
 
-export const ModalCardDescription: FC<Props> = ({ cardId }) => {
-  const { state, setState } = useContext(Context);
+export const ModalCardDescription: FC<Props> = ({ cardId, descriptionText, setDescriptionText }) => {
+  const { state } = useContext(Context);
   const { cards } = state;
-  const [descriptionText, setDescriptionText] = useState("");
 
   useEffect(() => {
     const description =
@@ -21,18 +22,7 @@ export const ModalCardDescription: FC<Props> = ({ cardId }) => {
   }, []);
 
   const handleChangeNewDescription = (e) => {
-    let newDescription = e.target.value;
-    setDescriptionText(newDescription);
-    let newState = {
-      ...state,
-      cards: cards.map((card) => {
-        if (card.id === cardId) {
-          card.description = newDescription;
-        }
-        return card;
-      }),
-    };
-    setState(newState);
+    setDescriptionText( e.target.value);
   };
 
   return (

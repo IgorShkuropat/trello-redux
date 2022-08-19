@@ -3,38 +3,33 @@ import { BsFillPencilFill as Pencil } from "react-icons/bs";
 import { TCard } from "../../types";
 import { Flex, ModalCard, Button, BasicModal} from "../../components";
 import styled from "styled-components";
-import { Context } from "../../store/Context";
 
 type Props = {
   card: TCard;
 };
 
 export const Card: React.FC<Props> = ({ card }) => {
-  // const {state, setState} = useContext(Context)
-  const [isModalActive, setisModalActive] = useState(false);
-  const [cardProps, setCardProps] = useState<TCard>(null!);
+  const [isModalActive, setIsModalActive] = useState(false);
 
-  const toggleModal = () => {
-    setisModalActive((prev) => !prev);
-  };
+  const disableModal = () => {
+    setIsModalActive(false);
+  }
 
   return (
     <>
-      {card && (
-        <>
+      
           <CardBody justify="space-between" width="100%">
             <CardText>{` ${card.text}`}</CardText>
-            <EditButton onClick={() => (toggleModal(), setCardProps(card))}>
+            <EditButton onClick={() => setIsModalActive(true)}>
               <Pen />
             </EditButton>
           </CardBody>
 
           {isModalActive && (
-            <ModalCard toggleModal={toggleModal} cardProps={cardProps} />
+            <ModalCard disableModal={disableModal} cardProps={card} />
           )}
 
-        </>
-      )}
+      
     </>
   );
 }

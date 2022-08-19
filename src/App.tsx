@@ -1,8 +1,7 @@
-import {Header, Deck, ModalLogin} from "./components";
-import {GlobalStyles} from "./GlobalStyles";
+import { Header, Deck, ModalLogin } from "./components";
+import { GlobalStyles } from "./GlobalStyles";
 import { Context } from "./store/Context";
 import { useLocalStorage } from "./hooks/useLocalStorage";
-
 
 function App() {
   const [state, setState] = useLocalStorage(
@@ -14,7 +13,7 @@ function App() {
         { id: "4", title: "Done" },
       ],
       cards: [],
-      userName: ""
+      userName: "",
     },
     "state" // key for localstorage
   );
@@ -25,13 +24,10 @@ function App() {
       <Context.Provider value={{ state, setState }}>
         <Header />
         <Deck />
-        {!state.userName && <ModalLogin/>}
-
+        {!state.userName && <ModalLogin />}
       </Context.Provider>
     </>
   );
 }
 
 export default App;
-
-

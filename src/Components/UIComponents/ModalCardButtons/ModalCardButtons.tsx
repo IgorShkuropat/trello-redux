@@ -5,9 +5,9 @@ type Props = {
     saveData: () => void,
     removeTask: (cardId: string) => void,
     cardId: string,
-    toggleModal: () => void
+    disableModal: () => void
 }
-export const ModalCardButtons: FC<Props> = ({saveData, removeTask, toggleModal, cardId}) => {
+export const ModalCardButtons: FC<Props> = ({saveData, removeTask, disableModal, cardId}) => {
   return (
     <>
     <Flex
@@ -20,7 +20,7 @@ export const ModalCardButtons: FC<Props> = ({saveData, removeTask, toggleModal, 
       <Button onClick={saveData}>Save</Button>
       <Button
         color="#9f1010"
-        onClick={() => (removeTask(cardId), toggleModal())}
+        onClick={() => (removeTask(cardId), disableModal())}
       >
         Delete
       </Button>
