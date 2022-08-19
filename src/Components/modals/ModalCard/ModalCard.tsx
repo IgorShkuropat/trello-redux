@@ -46,6 +46,10 @@ export const ModalCard: FC<TModalCardProps> = ({
   };
 
   const saveData = () => {
+    if(!titleInput){
+      alert("Enter something!")
+      return;
+    }
     const newState = {
       ...state,
       cards: cards.map((card) => {
