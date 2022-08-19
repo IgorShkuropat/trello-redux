@@ -19,10 +19,16 @@ export const ModalLogin = () => {
   };
   return (
     <BasicModal>
-      <ModalContent justify="center" alignSelf="center" direction="column">
+      <ModalContent justify="center" alignSelf="center" direction="column" gap="8px">
         <ModalH1>Your name is?</ModalH1>
-        <ModalInput placeholder="Name" value={input} onChange={inputHandler} />
-        <Button onClick={submitModal}>Submit</Button>
+        <Flex direction="column" alignSelf="center">
+          <ModalInput
+            placeholder="Name"
+            value={input}
+            onChange={inputHandler}
+          />
+          <Button onClick={submitModal} margin="12px 0">Submit</Button>
+        </Flex>
       </ModalContent>
     </BasicModal>
   );
@@ -41,8 +47,6 @@ const ModalH1 = styled.h1`
 `;
 const ModalInput = styled.input`
   width: 90%;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
   &:focus {
     outline: 0px solid black;
   }
@@ -52,4 +56,3 @@ const ModalInput = styled.input`
   border-bottom: 1px black solid;
   border-radius: 0;
 `;
-
