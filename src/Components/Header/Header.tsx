@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import { Flex } from "../../components";
 import { GiBiceps } from "react-icons/gi";
+import { useSelector } from "react-redux";
 
 export const Header = () => {
+  const state = useSelector(state => state)
+  console.log(state)
   return (
     <>
       <Background>

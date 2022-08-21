@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Flex, BasicModal, Button } from "../../../components";
-import { Context } from "../../../store/Context";
+import { Context } from "../../../redux/store/Context";
 import { useContext, useState } from "react";
 
 export const ModalLogin = () => {

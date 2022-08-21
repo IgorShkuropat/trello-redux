@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Context } from "../../store/Context";
+import { Context } from "../../redux/store/Context";
 import styled from "styled-components";
 import { generateID } from "../../utils/generateID";
 import { TColumn } from "../../types";

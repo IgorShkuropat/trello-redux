@@ -1,5 +1,5 @@
 import React, { FC, useContext, useState } from "react";
-import { Context } from "../../store/Context";
+import { Context } from "../../redux/store/Context";
 import { TComment } from "../../types";
 import { BsFillPencilFill as Pencil } from "react-icons/bs";
 import { IoClose as Close } from "react-icons/io5";

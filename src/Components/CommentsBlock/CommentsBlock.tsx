@@ -1,6 +1,6 @@
 import React, { useState, useContext, FC } from "react";
 import { generateID } from "../../utils/generateID";
-import { Context } from "../../store/Context";
+import { Context } from "../../redux/store/Context";
 import { Flex, Button, Comment } from "../../components";
 import { FaRegComments as Icon } from "react-icons/fa";
 import styled from "styled-components";

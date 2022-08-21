@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Context } from "../../store/Context";
+import { Context } from "../../redux/store/Context";
 import { generateID } from "../../utils/generateID";
 import styled from "styled-components";
 import { Column, Flex } from "../../components";

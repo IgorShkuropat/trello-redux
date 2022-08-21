@@ -1,6 +1,6 @@
 import { Header, Deck, ModalLogin } from "./components";
 import { GlobalStyles } from "./GlobalStyles";
-import { Context } from "./store/Context";
+import { Context } from "./redux/store/Context";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
