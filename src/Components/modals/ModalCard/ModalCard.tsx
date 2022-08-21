@@ -19,7 +19,7 @@ type TModalCardProps = {
 };
 
 export const ModalCard: FC<TModalCardProps> = ({
-  cardProps: { text, id: cardId, comments: cardComments },
+  cardProps: { text, id: cardId},
   disableModal,
 }) => {
   const { state, setState } = useContext(Context);
@@ -96,7 +96,7 @@ export const ModalCard: FC<TModalCardProps> = ({
           setDescriptionText={setDescriptionText}
           cardId={cardId}
         />
-        <CommentsBlock cardId={cardId} cardComments={cardComments} />
+        <CommentsBlock cardId={cardId}/>
         <ModalCardButtons
           saveData={saveData}
           disableModal={disableModal}

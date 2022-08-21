@@ -1,5 +1,4 @@
-import React, { useState, useContext, FC, useEffect } from "react";
-import { TComment } from "../../types";
+import React, { useState, useContext, FC } from "react";
 import { generateID } from "../../utils/generateID";
 import { Context } from "../../store/Context";
 import { Flex, Button, Comment } from "../../components";
@@ -8,13 +7,12 @@ import styled from "styled-components";
 
 type Props = {
   cardId: string;
-  cardComments: TComment[];
 };
 
-export const CommentsBlock: FC<Props> = ({ cardId, cardComments }) => {
+export const CommentsBlock: FC<Props> = ({ cardId }) => {
   const { state, setState } = useContext(Context);
   const [textarea, setTextarea] = useState("");
-  const [comments, setComments] = useState<TComment[]>(cardComments);
+  const currentCard = state.cards.find((card) => card.id === cardId);
 
   const handleChangeTextarea = (e) => {
     setTextarea(e.target.value);
@@ -37,8 +35,7 @@ export const CommentsBlock: FC<Props> = ({ cardId, cardComments }) => {
       }),
     };
     setState(newState);
-    const currentCard = state.cards.find((card) => card.id === cardId);
-    setComments(currentCard?.comments || []);
+
   };
 
   return (
@@ -58,13 +55,12 @@ export const CommentsBlock: FC<Props> = ({ cardId, cardComments }) => {
             Add comment
           </Button>
         </Flex>
-        {comments.map((comment) => (
+        {currentCard?.comments.map((comment) => (
           <Comment
             key={comment.id}
             userName={state.userName}
             comment={comment}
             cardId={cardId}
-            setCommentsList={setComments}
           />
         ))}
       </Flex>

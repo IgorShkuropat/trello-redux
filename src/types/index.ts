@@ -1,4 +1,3 @@
-// import { TComment } from './index';
 import { Dispatch, SetStateAction } from "react";
 
 export type TComment = {

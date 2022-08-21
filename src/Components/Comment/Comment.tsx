@@ -1,6 +1,6 @@
 import React, { FC, useContext, useState } from "react";
 import { Context } from "../../store/Context";
-import { TComment, TsetComments } from "../../types";
+import { TComment } from "../../types";
 import { BsFillPencilFill as Pencil } from "react-icons/bs";
 import { IoClose as Close } from "react-icons/io5";
 import { Flex, Button } from "../../components";
@@ -10,15 +10,9 @@ type Props = {
   userName: string;
   comment: TComment;
   cardId: string;
-  setCommentsList: TsetComments<TComment[]>;
 };
 
-export const Comment: FC<Props> = ({
-  userName,
-  comment,
-  cardId,
-  setCommentsList,
-}) => {
+export const Comment: FC<Props> = ({ userName, comment, cardId }) => {
   const { state, setState } = useContext(Context);
   const [isCommentEditing, setisCommentEditing] = useState(false);
   const [newCommentText, setNewCommentText] = useState(comment.text);
@@ -58,11 +52,6 @@ export const Comment: FC<Props> = ({
       }),
     };
     setState(newState);
-    const currentCard = state.cards.find((card) => card.id === cardId);
-    const newCommentsList = currentCard?.comments.filter(
-      (cardComment) => comment.id !== cardComment.id
-    );
-    setCommentsList(newCommentsList!);
   };
   return (
     <StyledFlex
