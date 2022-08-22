@@ -1,6 +1,6 @@
 import { useState, useContext, FC, useEffect } from "react";
 import styled from "styled-components";
-import { Context } from "../../../redux/store/Context";
+import { Context } from "../../../store/Context";
 import { ModalContent } from "../ModalLogin";
 import {
   Flex,

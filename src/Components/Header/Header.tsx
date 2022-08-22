@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { Flex } from "../../components";
 import { GiBiceps } from "react-icons/gi";
-import { useSelector } from "react-redux";
-
+import { useAppSelector } from "../../hooks/redux/hooks";
 export const Header = () => {
-  const state = useSelector(state => state)
+
+  const state = useAppSelector(state => state)
   console.log(state)
   return (
     <>

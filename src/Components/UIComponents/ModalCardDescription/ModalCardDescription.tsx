@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, FC } from "react";
-import { Context } from "../../../redux/store/Context";
+import { Context } from "../../../store/Context";
 import { Flex } from "../../../components";
 import { MdOutlineDescription } from "react-icons/md";
 import styled from "styled-components";
