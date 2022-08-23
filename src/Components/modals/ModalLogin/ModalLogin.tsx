@@ -1,14 +1,23 @@
 import styled from 'styled-components';
 import { Flex, BasicModal, Button } from '../../../components';
-import { useState } from 'react';
 import { useAppDispatch } from '../../../hooks/redux/hooks';
 import { setName } from '../../../ducks/user/userSlice';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
+type Input = {
+  nameInput: string;
+};
 export const ModalLogin = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<Input>();
   const dispatch = useAppDispatch();
-  const [input, setInput] = useState('');
-  const inputHandler = e => {
-    setInput(e.target.value);
+
+  const onFormSubmit: SubmitHandler<Input> = data => {
+    console.log(data);
+    dispatch(setName(data.nameInput!));
   };
 
   return (
@@ -21,14 +30,17 @@ export const ModalLogin = () => {
       >
         <ModalH1>Your name is?</ModalH1>
         <Flex direction="column" alignSelf="center">
-          <ModalInput
-            placeholder="Name"
-            value={input}
-            onChange={inputHandler}
-          />
-          <Button onClick={() => dispatch(setName(input))} margin="12px 0">
-            Submit
-          </Button>
+          <form onSubmit={handleSubmit(onFormSubmit)}>
+            <ModalInput
+              {...register('nameInput', { required: true, maxLength: 15 })}
+              type="text"
+              name="nameInput"
+              placeholder="Name"
+            />
+            <Button type="submit" margin="12px 0">
+              Submit
+            </Button>
+          </form>
         </Flex>
       </ModalContent>
     </BasicModal>
