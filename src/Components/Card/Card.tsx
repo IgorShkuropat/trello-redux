@@ -19,7 +19,7 @@ export const Card: React.FC<Props> = ({ card }) => {
     <>
       <CardBody justify="space-between">
         <CardTextWrapper>
-          <CardText>{` ${card.text}`}</CardText>
+          <CardText>{` ${card.title}`}</CardText>
         </CardTextWrapper>
         <EditButton onClick={() => setIsModalActive(true)}>
           <Pen />

@@ -1,19 +1,16 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type User = {
-  name: string;
-};
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from './types';
 
 const initialState: User = {
-  name: "",
+  name: '',
 };
 
 const user = createSlice({
-  name: "user",
+  name: 'user',
   initialState: initialState,
   reducers: {
     setName(user, action: PayloadAction<string>) {
-        user.name = action.payload;
+      user.name = action.payload;
     },
   },
 });

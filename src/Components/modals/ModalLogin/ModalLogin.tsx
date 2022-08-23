@@ -1,25 +1,24 @@
-import styled from "styled-components";
-import { Flex, BasicModal, Button } from "../../../components";
-import { Context } from "../../../store/Context";
-import { useContext, useState } from "react";
+import styled from 'styled-components';
+import { Flex, BasicModal, Button } from '../../../components';
+import { useState } from 'react';
+import { useAppDispatch } from '../../../hooks/redux/hooks';
+import { setName } from '../../../ducks/user/userSlice';
 
 export const ModalLogin = () => {
-  const { state, setState } = useContext(Context);
-  const [input, setInput] = useState("");
-  const inputHandler = (e) => {
+  const dispatch = useAppDispatch();
+  const [input, setInput] = useState('');
+  const inputHandler = e => {
     setInput(e.target.value);
   };
 
-  const submitModal = () => {
-    const newState = {
-      ...state,
-      userName: input,
-    };
-    setState(newState);
-  };
   return (
     <BasicModal>
-      <ModalContent justify="center" alignSelf="center" direction="column" gap="8px">
+      <ModalContent
+        justify="center"
+        alignSelf="center"
+        direction="column"
+        gap="8px"
+      >
         <ModalH1>Your name is?</ModalH1>
         <Flex direction="column" alignSelf="center">
           <ModalInput
@@ -27,7 +26,9 @@ export const ModalLogin = () => {
             value={input}
             onChange={inputHandler}
           />
-          <Button onClick={submitModal} margin="12px 0">Submit</Button>
+          <Button onClick={() => dispatch(setName(input))} margin="12px 0">
+            Submit
+          </Button>
         </Flex>
       </ModalContent>
     </BasicModal>

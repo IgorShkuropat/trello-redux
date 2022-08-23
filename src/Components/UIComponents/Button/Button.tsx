@@ -1,22 +1,23 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-    children: ReactNode,
-    color?: string,
-    margin?: string,
-    onClick?: () => void
-}
+  children: ReactNode;
+  color?: string;
+  margin?: string;
+  type?: string;
+  onClick?: () => void;
+};
 
-export const Button = ({children, color, margin, onClick}: Props) => (
-    <>
-        <StyledButton onClick={onClick} color={color} margin={margin}>
-            <StyledButtonText>{children}</StyledButtonText>
-        </StyledButton>
-    </>
-)
+export const Button = ({ children, color, margin, onClick }: Props) => (
+  <>
+    <StyledButton onClick={onClick} color={color} margin={margin} type="submit">
+      <StyledButtonText>{children}</StyledButtonText>
+    </StyledButton>
+  </>
+);
 const StyledButton = styled.button<Props>`
-  background-color: ${(props) => props.color || "rgb(94, 162, 215)"};
+  background-color: ${props => props.color || 'rgb(94, 162, 215)'};
   text-decoration-line: none;
   cursor: pointer;
   height: 1.5rem;
@@ -25,7 +26,7 @@ const StyledButton = styled.button<Props>`
   &:hover {
     filter: brightness(0.9);
   }
-  margin: ${(props) => props.margin || "0"};
+  margin: ${props => props.margin || '0'};
   align-self: flex-start;
 `;
 

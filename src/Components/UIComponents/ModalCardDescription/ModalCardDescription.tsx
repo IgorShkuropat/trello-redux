@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext, FC } from "react";
-import { Context } from "../../../store/Context";
+import React, { useEffect, FC } from "react";
 import { Flex } from "../../../components";
 import { MdOutlineDescription } from "react-icons/md";
 import styled from "styled-components";
+import { useAppSelector } from "../../../hooks/redux/hooks";
 
 type Props = {
   cardId: string;
@@ -11,9 +11,8 @@ type Props = {
 };
 
 export const ModalCardDescription: FC<Props> = ({ cardId, descriptionText, setDescriptionText }) => {
-  const { state } = useContext(Context);
-  const { cards } = state;
-
+  const cards = useAppSelector(state => state.cards)
+  
   useEffect(() => {
     const description =
       cards.find(card => card.id === cardId)?.description || "";

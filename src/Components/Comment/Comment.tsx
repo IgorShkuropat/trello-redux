@@ -1,10 +1,11 @@
-import React, { FC, useContext, useState } from "react";
-import { Context } from "../../store/Context";
-import { TComment } from "../../types";
-import { BsFillPencilFill as Pencil } from "react-icons/bs";
-import { IoClose as Close } from "react-icons/io5";
-import { Flex, Button } from "../../components";
-import styled from "styled-components";
+import React, { FC, useState } from 'react';
+import { TComment } from '../../types';
+import { BsFillPencilFill as Pencil } from 'react-icons/bs';
+import { IoClose as Close } from 'react-icons/io5';
+import { Flex, Button } from '../../components';
+import styled from 'styled-components';
+import { useAppDispatch } from '../../hooks/redux/hooks';
+import { changeText, deleteComment } from '../../ducks/comments/commentsSlice';
 
 type Props = {
   userName: string;
@@ -12,47 +13,18 @@ type Props = {
   cardId: string;
 };
 
-export const Comment: FC<Props> = ({ userName, comment, cardId }) => {
-  const { state, setState } = useContext(Context);
+export const Comment: FC<Props> = ({ userName, comment }) => {
   const [isCommentEditing, setisCommentEditing] = useState(false);
   const [newCommentText, setNewCommentText] = useState(comment.text);
-
-  const handleChangeNewCommentText = (e) => {
+  const dispatch = useAppDispatch();
+  const handleChangeNewCommentText = e => {
     setNewCommentText(e.target.value);
   };
 
   const applyNewCommentText = () => {
-    const newState = {
-      ...state,
-      cards: state.cards.map((card) => {
-        if (card.id === cardId) {
-          card.comments = card.comments.map((cardComment) => {
-            if (cardComment.id === comment.id) {
-              cardComment.text = newCommentText;
-            }
-            return cardComment;
-          });
-        }
-        return card;
-      }),
-    };
-    setState(newState);
+    dispatch(changeText({ commentId: comment.id, newText: newCommentText }));
   };
 
-  const deleteComment = () => {
-    const newState = {
-      ...state,
-      cards: state.cards.map((card) => {
-        if (card.id === cardId) {
-          card.comments = card.comments.filter(
-            (cardComment) => cardComment.id !== comment.id
-          );
-        }
-        return card;
-      }),
-    };
-    setState(newState);
-  };
   return (
     <StyledFlex
       direction="column"
@@ -65,7 +37,9 @@ export const Comment: FC<Props> = ({ userName, comment, cardId }) => {
           <AuthorName>{userName}</AuthorName>
           <Flex gap="4px">
             <Pen onClick={() => setisCommentEditing(true)} />
-            <DeleteCommentIcon onClick={deleteComment} />
+            <DeleteCommentIcon
+              onClick={() => dispatch(deleteComment(comment.id))}
+            />
           </Flex>
         </Flex>
       </Flex>
@@ -108,7 +82,7 @@ const CommentTextTextarea = styled.textarea`
   resize: none;
   color: #172b4d;
   width: 90%;
-  &[type="text"] {
+  &[type='text'] {
     font-family: Roboto, sans-serif;
     font-size: 0.7rem;
     color: #7c818b;

@@ -1,43 +1,37 @@
-import { useState, useContext } from "react";
-import { Context } from "../../store/Context";
-import { generateID } from "../../utils/generateID";
-import styled from "styled-components";
-import { Column, Flex } from "../../components";
-import { AiOutlinePlus } from "react-icons/ai";
+import { useState } from 'react';
+import styled from 'styled-components';
+import { Column, Flex } from '../../components';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { addColumn } from '../../ducks/columns';
+import { selectColumns } from '../../ducks/columns';
 
 export const Deck = () => {
-  const { state, setState } = useContext(Context);
+  const [title, setTitle] = useState('');
+  const columns = useAppSelector(selectColumns);
+  const dispatch = useAppDispatch();
 
-  const [title, setTitle] = useState("");
-  const { columns } = state;
-
-  const handleChangeTitle = (e) => {
+  const handleChangeTitle = e => {
     setTitle(e.target.value);
   };
 
-  const addColumn = () => {
+  const addColumnToDeck = () => {
     if (title) {
-      const newState = {
-        ...state,
-        columns: [...columns, { title, id: generateID() }],
-      };
-
-      setState(newState);
-      setTitle("");
+      dispatch(addColumn(title));
+      setTitle('');
     } else {
-      alert("Enter something!");
+      alert('Enter something!');
     }
-    console.log(title);
   };
 
   return (
     <Wrapper>
       <Flex justify="center" gap="0.5rem" wrap="wrap" basis="17.1875rem">
-        {columns.map((column) => {
-          return <Column key={column.id} column={column} />;
-        })}
+        {columns.map(column => (
+          <Column key={column.id} column={column} />
+        ))}
         <AddButtonContainer>
-          <AddButton onClick={addColumn}>
+          <AddButton onClick={addColumnToDeck}>
             <Flex justify="center" align="center">
               <Plus />
               <AddButtonText>Add column</AddButtonText>
@@ -111,7 +105,7 @@ const AddButtonInput = styled.input`
     opacity: 0;
     transition: opacity 0.3s ease;
   }
-  &[type="text"] {
+  &[type='text'] {
     font-family: Roboto, sans-serif;
     font-size: 0.7rem;
     color: #7c818b;

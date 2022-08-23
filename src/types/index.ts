@@ -8,7 +8,7 @@ export type TComment = {
 
 export type TCard = {
   id: string;
-  text: string;
+  title: string;
   columnId: string;
   description?: string;
   comments: TComment[]

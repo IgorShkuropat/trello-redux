@@ -1,31 +1,17 @@
-import { Header, Deck, ModalLogin } from "./components";
-import { GlobalStyles } from "./GlobalStyles";
-import { Context } from "./store/Context";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import { Header, Deck, ModalLogin } from './components';
+import { selectUserName } from './ducks/user';
+import { GlobalStyles } from './GlobalStyles';
+import { useAppSelector } from './hooks/redux/hooks';
 
 function App() {
-  const [state, setState] = useLocalStorage(
-    {
-      columns: [
-        { id: "1", title: "TODO" },
-        { id: "2", title: "In Progress" },
-        { id: "3", title: "Testing" },
-        { id: "4", title: "Done" },
-      ],
-      cards: [],
-      userName: "",
-    },
-    "state" // key for localstorage
-  );
+  const userName = useAppSelector(selectUserName);
 
   return (
     <>
       <GlobalStyles />
-      <Context.Provider value={{ state, setState }}>
-        <Header />
-        <Deck />
-        {!state.userName && <ModalLogin />}
-      </Context.Provider>
+      <Header />
+      <Deck />
+      {!userName && <ModalLogin />}
     </>
   );
 }

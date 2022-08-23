@@ -1,9 +1,11 @@
-import { useState, useContext } from "react";
-import { Context } from "../../store/Context";
-import styled from "styled-components";
-import { generateID } from "../../utils/generateID";
-import { TColumn } from "../../types";
-import { Flex,  Card } from "../../components";
+import { useState } from 'react';
+import styled from 'styled-components';
+import { TColumn } from '../../types';
+import { Flex, Card } from '../../components';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { addCard } from '../../ducks/cards';
+import { renameColumn } from '../../ducks/columns';
+import { selectAttachedCards } from '../../ducks/cards';
 
 type Props = {
   column: TColumn;
@@ -12,44 +14,27 @@ type Props = {
 export const Column: React.FC<Props> = ({
   column: { title, id: columnId },
 }) => {
-  const [input, setInput] = useState("");
-  const { state, setState } = useContext(Context);
-  const { columns, cards } = state;
-
-  const addCard = () => {
-    const newState = {
-      ...state,
-      cards: [
-        ...state.cards,
-        { id: generateID(), text: input, columnId: columnId, comments: []},
-      ],
-    };
+  const [input, setInput] = useState('');
+  const dispatch = useAppDispatch();
+  const attachedCards = useAppSelector(selectAttachedCards(columnId));
+  const addCardInColumn = () => {
     if (input) {
-      setState(newState);
-      setInput("");
+      dispatch(addCard({ columnId, title: input }));
+      setInput('');
     } else {
-      alert("Enter something!");
+      alert('Enter something!');
     }
   };
 
-  const handleChangeInput = (e) => {
+  const handleChangeInput = e => {
     setInput(e.target.value);
   };
 
-  const handleChangeNewTitle = (e) => {
+  const handleChangeNewTitle = e => {
     let newTitle = e.target.value;
-    let newState = {
-      ...state,
-      columns: columns.map((elem) => {
-        if (elem.id === columnId) {
-          elem.title = newTitle;
-        }
-        return elem;
-      }),
-    };
-    setState(newState);
+    dispatch(renameColumn({ columnId, newTitle }));
   };
- 
+
   return (
     <>
       <CardContainer
@@ -73,8 +58,10 @@ export const Column: React.FC<Props> = ({
           name="text"
           onChange={handleChangeInput}
         />
-        {cards.map(card => columnId === card.columnId && <Card key={card.id} card={card} />)}
-        <Button onClick={addCard}>
+        {attachedCards.map(card => (
+          <Card key={card.id} card={card} />
+        ))}
+        <Button onClick={addCardInColumn}>
           <ButtonText>Add card</ButtonText>
         </Button>
       </CardContainer>
@@ -132,7 +119,7 @@ export const Input = styled.input`
     opacity: 0;
     transition: opacity 0.3s ease;
   }
-  &[type="text"] {
+  &[type='text'] {
     font-family: Roboto, sans-serif;
     font-size: 0.7rem;
     color: #7c818b;
@@ -171,7 +158,7 @@ export const Title = styled(Input)`
   &:-ms-input-placeholder {
     text-align: center;
   }
-  &[type="text"] {
+  &[type='text'] {
     font-family: Roboto, sans-serif;
     font-size: 1rem;
     font-weight: 600;

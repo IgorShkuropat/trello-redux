@@ -1,17 +1,22 @@
-import { useState, useContext, FC, useEffect } from "react";
-import styled from "styled-components";
-import { Context } from "../../../store/Context";
-import { ModalContent } from "../ModalLogin";
+import { useState, FC, useEffect } from 'react';
+import styled from 'styled-components';
+import { ModalContent } from '../ModalLogin';
 import {
   Flex,
   BasicModal,
   CommentsBlock,
   ModalCardButtons,
   ModalCardDescription,
-} from "../../../components";
-import { TCard } from "../../../types";
-import { IoClose } from "react-icons/io5";
-import { BsCardHeading } from "react-icons/bs";
+} from '../../../components';
+import { TCard } from '../../../types';
+import { IoClose } from 'react-icons/io5';
+import { BsCardHeading } from 'react-icons/bs';
+import { useAppDispatch } from '../../../hooks/redux/hooks';
+import {
+  changeDescription,
+  removeCard,
+  renameCard,
+} from '../../../ducks/cards';
 
 type TModalCardProps = {
   cardProps: TCard;
@@ -19,56 +24,38 @@ type TModalCardProps = {
 };
 
 export const ModalCard: FC<TModalCardProps> = ({
-  cardProps: { text, id: cardId},
+  cardProps: { title, id: cardId },
   disableModal,
 }) => {
-  const { state, setState } = useContext(Context);
-  const [titleInput, setTitleInput] = useState(text);
-  const [descriptionText, setDescriptionText] = useState("");
-  const { cards } = state;
+  const [titleInput, setTitleInput] = useState(title);
+  const [descriptionText, setDescriptionText] = useState('');
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const keyDownHandler = (event) => {
+    const keyDownHandler = event => {
       if (event.key === `Escape`) {
         disableModal();
       }
     };
-    document.addEventListener("keydown", keyDownHandler);
+    document.addEventListener('keydown', keyDownHandler);
 
     return () => {
-      document.removeEventListener("keydown", keyDownHandler);
+      document.removeEventListener('keydown', keyDownHandler);
     };
   }, []);
 
-  const handleChangeNewTitle = (e) => {
+  const handleChangeNewTitle = e => {
     let newTitle = e.target.value;
     setTitleInput(newTitle);
   };
 
   const saveData = () => {
-    if(!titleInput){
-      alert("Enter something!")
+    if (!titleInput) {
+      alert('Enter something!');
       return;
     }
-    const newState = {
-      ...state,
-      cards: cards.map((card) => {
-        if (card.id === cardId) {
-          card.text = titleInput;
-          card.description = descriptionText;
-        }
-        return card;
-      }),
-    };
-    setState(newState);
-  };
-
-  const removeCard = (cardId: string): void => {
-    let filtredCards = {
-      ...state,
-      cards: cards.filter((cards) => !(cards.id === cardId)),
-    };
-    setState(filtredCards);
+    dispatch(renameCard({ cardId, newTitle: titleInput }));
+    dispatch(changeDescription({ cardId, newText: descriptionText }));
   };
 
   return (
@@ -80,10 +67,10 @@ export const ModalCard: FC<TModalCardProps> = ({
         alignSelf="center"
       >
         <Flex justify="flex-end" direction="row" width="100%">
-          <div style={{ marginRight: "4rem" }}>
+          <div style={{ marginRight: '4rem' }}>
             <Flex justify="flex-start" align="center" width="100%">
               <InputIcon />
-              <div style={{ marginLeft: "2%" }}>
+              <div style={{ marginLeft: '2%' }}>
                 <CardTitle value={titleInput} onChange={handleChangeNewTitle} />
               </div>
             </Flex>
@@ -96,12 +83,12 @@ export const ModalCard: FC<TModalCardProps> = ({
           setDescriptionText={setDescriptionText}
           cardId={cardId}
         />
-        <CommentsBlock cardId={cardId}/>
+        <CommentsBlock cardId={cardId} />
         <ModalCardButtons
           saveData={saveData}
           disableModal={disableModal}
           cardId={cardId}
-          removeCard={removeCard}
+          removeCard={() => dispatch(removeCard(cardId))}
         />
       </ModalContent>
     </BasicModal>
