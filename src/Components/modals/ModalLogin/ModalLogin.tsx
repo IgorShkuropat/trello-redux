@@ -1,18 +1,14 @@
 import styled from 'styled-components';
 import { Flex, BasicModal, Button } from '../../../components';
-import { useAppDispatch } from '../../../hooks/redux/hooks';
-import { setName } from '../../../ducks/user/userSlice';
+import { useAppDispatch } from '../../../hooks/redux';
+import { setName } from '../../../ducks/user';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Input = {
   nameInput: string;
 };
 export const ModalLogin = () => {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<Input>();
+  const { handleSubmit, register } = useForm<Input>();
   const dispatch = useAppDispatch();
 
   const onFormSubmit: SubmitHandler<Input> = data => {
@@ -30,9 +26,13 @@ export const ModalLogin = () => {
       >
         <ModalH1>Your name is?</ModalH1>
         <Flex direction="column" alignSelf="center">
-          <form onSubmit={handleSubmit(onFormSubmit)}>
+          <form
+            onSubmit={handleSubmit(onFormSubmit, () =>
+              alert("Name can't be empty!"),
+            )}
+          >
             <ModalInput
-              {...register('nameInput', { required: true, maxLength: 15 })}
+              {...register('nameInput', { required: true, maxLength: 25 })}
               type="text"
               name="nameInput"
               placeholder="Name"

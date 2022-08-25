@@ -3,12 +3,8 @@ export type AddCardPayload = {
   title: string;
 };
 
-export type RenameCardPayload = {
+export type UpdateCardPayload = {
   cardId: string;
-  newTitle: string;
-};
-
-export type ChangeDescriptionPayload = {
-  cardId: string;
-  newText: string;
+  title: string;
+  description: string;
 };

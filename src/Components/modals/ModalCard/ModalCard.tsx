@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { ModalContent } from '../ModalLogin';
 import {
@@ -11,24 +11,33 @@ import {
 import { TCard } from '../../../types';
 import { IoClose } from 'react-icons/io5';
 import { BsCardHeading } from 'react-icons/bs';
-import { useAppDispatch } from '../../../hooks/redux/hooks';
-import {
-  changeDescription,
-  removeCard,
-  renameCard,
-} from '../../../ducks/cards';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { selectCurrentCardDescription } from '../../../ducks/cards';
+import { updateCard, removeCard } from '../../../ducks/cards';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 type TModalCardProps = {
   cardProps: TCard;
   disableModal: () => void;
 };
 
+export type Fields = {
+  title: string;
+  description: string;
+};
+
 export const ModalCard: FC<TModalCardProps> = ({
   cardProps: { title, id: cardId },
   disableModal,
 }) => {
-  const [titleInput, setTitleInput] = useState(title);
-  const [descriptionText, setDescriptionText] = useState('');
+  const description = useAppSelector(selectCurrentCardDescription(cardId));
+
+  const { handleSubmit, register } = useForm<Fields>({
+    defaultValues: {
+      title,
+      description,
+    },
+  });
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -44,18 +53,14 @@ export const ModalCard: FC<TModalCardProps> = ({
     };
   }, []);
 
-  const handleChangeNewTitle = e => {
-    let newTitle = e.target.value;
-    setTitleInput(newTitle);
-  };
-
-  const saveData = () => {
-    if (!titleInput) {
-      alert('Enter something!');
-      return;
-    }
-    dispatch(renameCard({ cardId, newTitle: titleInput }));
-    dispatch(changeDescription({ cardId, newText: descriptionText }));
+  const saveData: SubmitHandler<Fields> = ({ title, description }) => {
+    dispatch(
+      updateCard({
+        cardId,
+        description: description,
+        title: title,
+      }),
+    );
   };
 
   return (
@@ -71,21 +76,17 @@ export const ModalCard: FC<TModalCardProps> = ({
             <Flex justify="flex-start" align="center" width="100%">
               <InputIcon />
               <div style={{ marginLeft: '2%' }}>
-                <CardTitle value={titleInput} onChange={handleChangeNewTitle} />
+                <CardTitle {...register('title', { required: true })} />
               </div>
             </Flex>
           </div>
           <CloseButton onClick={disableModal} />
         </Flex>
 
-        <ModalCardDescription
-          descriptionText={descriptionText}
-          setDescriptionText={setDescriptionText}
-          cardId={cardId}
-        />
+        <ModalCardDescription formMethods={{ handleSubmit, register }} />
         <CommentsBlock cardId={cardId} />
         <ModalCardButtons
-          saveData={saveData}
+          saveData={handleSubmit(saveData)}
           disableModal={disableModal}
           cardId={cardId}
           removeCard={() => dispatch(removeCard(cardId))}

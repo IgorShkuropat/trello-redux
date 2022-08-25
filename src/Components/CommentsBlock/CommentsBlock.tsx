@@ -1,31 +1,32 @@
-import React, { useState, FC } from 'react';
+import React, { FC } from 'react';
 import { Flex, Button, Comment } from '../../components';
 import { FaRegComments as Icon } from 'react-icons/fa';
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addComment } from '../../ducks/comments';
 import { selectAttachedComments } from '../../ducks/comments';
 import { selectUserName } from '../../ducks/user';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Props = {
   cardId: string;
 };
 
+type Field = {
+  commentText: string;
+};
+
 export const CommentsBlock: FC<Props> = ({ cardId }) => {
-  const [textarea, setTextarea] = useState('');
+  const { handleSubmit, register, resetField } = useForm<Field>();
+
   const userName = useAppSelector(selectUserName);
   const attachedComments = useAppSelector(selectAttachedComments(cardId));
   const dispatch = useAppDispatch();
 
-  const handleChangeTextarea = e => {
-    setTextarea(e.target.value);
+  const addCommentToCard: SubmitHandler<Field> = ({ commentText }) => {
+    dispatch(addComment({ cardId, text: commentText }));
+    resetField('commentText');
   };
-
-  const addCommentToCard = () => {
-    setTextarea('');
-    dispatch(addComment({ cardId, text: textarea }));
-  };
-
   return (
     <>
       <Flex direction="column" width="90%" align="center">
@@ -34,12 +35,11 @@ export const CommentsBlock: FC<Props> = ({ cardId }) => {
           <Title>Comments</Title>
         </Flex>
         <Textarea
-          value={textarea}
-          onChange={handleChangeTextarea}
+          {...register('commentText', { required: true })}
           placeholder="Leave a comment!"
         />
         <Flex justify="flex-end">
-          <Button onClick={addCommentToCard} margin="0 8px 0 0">
+          <Button onClick={handleSubmit(addCommentToCard)} margin="0 8px 0 0">
             Add comment
           </Button>
         </Flex>

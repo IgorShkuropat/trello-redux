@@ -1,29 +1,17 @@
-import React, { useEffect, FC } from "react";
-import { Flex } from "../../../components";
-import { MdOutlineDescription } from "react-icons/md";
-import styled from "styled-components";
-import { useAppSelector } from "../../../hooks/redux/hooks";
+import React, { useEffect, FC } from 'react';
+import { Flex } from '../../../components';
+import { MdOutlineDescription } from 'react-icons/md';
+import styled from 'styled-components';
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { Fields } from '../../modals/ModalCard/ModalCard';
 
 type Props = {
-  cardId: string;
-  descriptionText: string;
-  setDescriptionText: (description: string) => void;
+  formMethods: Pick<UseFormReturn<Fields>, 'handleSubmit' | 'register'>;
 };
 
-export const ModalCardDescription: FC<Props> = ({ cardId, descriptionText, setDescriptionText }) => {
-  const cards = useAppSelector(state => state.cards)
-  
-  useEffect(() => {
-    const description =
-      cards.find(card => card.id === cardId)?.description || "";
-
-    setDescriptionText(description);
-  }, []);
-
-  const handleChangeNewDescription = e => {
-    setDescriptionText( e.target.value);
-  };
-
+export const ModalCardDescription: FC<Props> = ({
+  formMethods: { register },
+}) => {
   return (
     <Flex justify="flex-start" align="center" width="100%">
       <DescriptionIcon />
@@ -31,8 +19,7 @@ export const ModalCardDescription: FC<Props> = ({ cardId, descriptionText, setDe
         <DescriptionTitle>Description</DescriptionTitle>
         <DescriptionTextarea
           placeholder="Card description"
-          onChange={handleChangeNewDescription}
-          value={descriptionText}
+          {...register('description')}
         />
       </Flex>
     </Flex>
@@ -62,7 +49,7 @@ const DescriptionTextarea = styled.textarea`
   font-size: 0.75rem;
   border-radius: 0.1875rem;
   resize: none;
-  &[type="text"] {
+  &[type='text'] {
     font-family: Roboto, sans-serif;
     font-size: 0.7rem;
     color: #7c818b;

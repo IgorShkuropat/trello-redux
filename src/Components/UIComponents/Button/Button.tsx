@@ -11,7 +11,7 @@ type Props = {
 
 export const Button = ({ children, color, margin, onClick }: Props) => (
   <>
-    <StyledButton onClick={onClick} color={color} margin={margin} type="submit">
+    <StyledButton onClick={onClick} color={color} margin={margin}>
       <StyledButtonText>{children}</StyledButtonText>
     </StyledButton>
   </>

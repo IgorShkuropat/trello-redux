@@ -4,8 +4,9 @@ import { BsFillPencilFill as Pencil } from 'react-icons/bs';
 import { IoClose as Close } from 'react-icons/io5';
 import { Flex, Button } from '../../components';
 import styled from 'styled-components';
-import { useAppDispatch } from '../../hooks/redux/hooks';
+import { useAppDispatch } from '../../hooks/redux';
 import { changeText, deleteComment } from '../../ducks/comments/commentsSlice';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Props = {
   userName: string;
@@ -13,17 +14,21 @@ type Props = {
   cardId: string;
 };
 
-export const Comment: FC<Props> = ({ userName, comment }) => {
-  const [isCommentEditing, setisCommentEditing] = useState(false);
-  const [newCommentText, setNewCommentText] = useState(comment.text);
-  const dispatch = useAppDispatch();
-  const handleChangeNewCommentText = e => {
-    setNewCommentText(e.target.value);
-  };
+type Field = {
+  commentText: string;
+};
 
-  const applyNewCommentText = () => {
-    dispatch(changeText({ commentId: comment.id, newText: newCommentText }));
-  };
+export const Comment: FC<Props> = ({ userName, comment }) => {
+  const [isCommentEditing, setIsCommentEditing] = useState(false);
+  const dispatch = useAppDispatch();
+  const { register, getValues, handleSubmit } = useForm<Field>({
+    defaultValues: {
+      commentText: comment.text,
+    },
+  });
+
+  const applyNewCommentText: SubmitHandler<Field> = ({ commentText }) =>
+    dispatch(changeText({ commentId: comment.id, newText: commentText }));
 
   return (
     <StyledFlex
@@ -36,7 +41,7 @@ export const Comment: FC<Props> = ({ userName, comment }) => {
         <Flex justify="space-between">
           <AuthorName>{userName}</AuthorName>
           <Flex gap="4px">
-            <Pen onClick={() => setisCommentEditing(true)} />
+            <Pen onClick={() => setIsCommentEditing(true)} />
             <DeleteCommentIcon
               onClick={() => dispatch(deleteComment(comment.id))}
             />
@@ -46,17 +51,23 @@ export const Comment: FC<Props> = ({ userName, comment }) => {
       {isCommentEditing ? (
         <>
           <CommentTextTextarea
-            value={newCommentText}
-            onChange={handleChangeNewCommentText}
+            {...register('commentText', { required: true })}
           />
           <Button
-            onClick={() => (setisCommentEditing(false), applyNewCommentText())}
+            onClick={() => {
+              console.log('GOGA');
+              getValues('commentText')
+                ? handleSubmit(applyNewCommentText)()
+                : dispatch(deleteComment(comment.id));
+
+              setIsCommentEditing(false);
+            }}
           >
             Save comment
           </Button>
         </>
       ) : (
-        <CommentText>{newCommentText}</CommentText>
+        <CommentText>{getValues('commentText')}</CommentText>
       )}
     </StyledFlex>
   );

@@ -1,28 +1,22 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { Column, Flex } from '../../components';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addColumn } from '../../ducks/columns';
 import { selectColumns } from '../../ducks/columns';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type Field = {
+  title: string;
+};
 
 export const Deck = () => {
-  const [title, setTitle] = useState('');
+  const { register, handleSubmit } = useForm<Field>();
   const columns = useAppSelector(selectColumns);
   const dispatch = useAppDispatch();
 
-  const handleChangeTitle = e => {
-    setTitle(e.target.value);
-  };
-
-  const addColumnToDeck = () => {
-    if (title) {
-      dispatch(addColumn(title));
-      setTitle('');
-    } else {
-      alert('Enter something!');
-    }
-  };
+  const addColumnToDeck: SubmitHandler<Field> = ({ title }) =>
+    dispatch(addColumn(title));
 
   return (
     <Wrapper>
@@ -31,13 +25,13 @@ export const Deck = () => {
           <Column key={column.id} column={column} />
         ))}
         <AddButtonContainer>
-          <AddButton onClick={addColumnToDeck}>
+          <AddButton onClick={handleSubmit(addColumnToDeck)}>
             <Flex justify="center" align="center">
               <Plus />
               <AddButtonText>Add column</AddButtonText>
             </Flex>
           </AddButton>
-          <AddButtonInput value={title} onChange={handleChangeTitle} />
+          <AddButtonInput {...register('title', { required: true })} />
         </AddButtonContainer>
       </Flex>
     </Wrapper>

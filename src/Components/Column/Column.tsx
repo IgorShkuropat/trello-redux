@@ -1,38 +1,38 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { TColumn } from '../../types';
 import { Flex, Card } from '../../components';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { addCard } from '../../ducks/cards';
 import { renameColumn } from '../../ducks/columns';
 import { selectAttachedCards } from '../../ducks/cards';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Props = {
   column: TColumn;
 };
 
+type FormFields = {
+  title: string;
+  cardName: string;
+};
+
 export const Column: React.FC<Props> = ({
-  column: { title, id: columnId },
+  column: { id: columnId, title },
 }) => {
-  const [input, setInput] = useState('');
+  const { handleSubmit, register, resetField, getValues } = useForm<FormFields>(
+    {
+      defaultValues: {
+        title: title,
+      },
+    },
+  );
+
   const dispatch = useAppDispatch();
   const attachedCards = useAppSelector(selectAttachedCards(columnId));
-  const addCardInColumn = () => {
-    if (input) {
-      dispatch(addCard({ columnId, title: input }));
-      setInput('');
-    } else {
-      alert('Enter something!');
-    }
-  };
 
-  const handleChangeInput = e => {
-    setInput(e.target.value);
-  };
-
-  const handleChangeNewTitle = e => {
-    let newTitle = e.target.value;
-    dispatch(renameColumn({ columnId, newTitle }));
+  const addCardToColumn: SubmitHandler<FormFields> = data => {
+    dispatch(addCard({ columnId, title: data.cardName }));
+    resetField('cardName');
   };
 
   return (
@@ -45,25 +45,39 @@ export const Column: React.FC<Props> = ({
         basis="17.1875rem"
       >
         <Title
+          {...register('title', {
+            required: true,
+            maxLength: 20,
+            onChange: () => {
+              const newTitle = getValues('title');
+              dispatch(renameColumn({ columnId, newTitle }));
+            },
+          })}
           type="text"
           placeholder="Title!"
-          value={title}
-          name="text"
-          onChange={handleChangeNewTitle}
         />
-        <Input
-          type="text"
-          placeholder="Enter card title"
-          value={input}
-          name="text"
-          onChange={handleChangeInput}
-        />
-        {attachedCards.map(card => (
-          <Card key={card.id} card={card} />
-        ))}
-        <Button onClick={addCardInColumn}>
-          <ButtonText>Add card</ButtonText>
-        </Button>
+        <Flex
+          direction="column"
+          justify="flex-start"
+          align="center"
+          gap="0.25rem"
+        >
+          <Input
+            {...register('cardName', { required: true })}
+            type="text"
+            placeholder="Enter card title"
+          />
+          {attachedCards.map(card => (
+            <Card key={card.id} card={card} />
+          ))}
+          <Button
+            onClick={handleSubmit(addCardToColumn, () =>
+              alert("Card name can't be empty!"),
+            )}
+          >
+            <ButtonText>Add card</ButtonText>
+          </Button>
+        </Flex>
       </CardContainer>
     </>
   );
